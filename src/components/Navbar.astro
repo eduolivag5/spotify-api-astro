@@ -1,0 +1,19 @@
+---
+// src/components/Navbar.astro
+---
+
+<nav class="fixed top-0 z-50 w-full border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="group flex items-center gap-2 transition-opacity hover:opacity-80">
+      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1DB954] text-black shadow-[0_0_15px_rgba(29,185,84,0.3)]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      <span class="text-lg font-black tracking-tighter text-white">SOUND<span class="text-[#1DB954]">.</span></span>
+    </a>
+
+    <div class="flex items-center gap-6">
+      <a href="/" class="text-xs font-black uppercase tracking-widest hover:text-[#1DB954] transition-colors">Inicio</a>
+      <a href="/history" class="text-xs font-black uppercase tracking-widest hover:text-[#1DB954] transition-colors">Historial</a>
+    </div>
+  </div>
+</nav>

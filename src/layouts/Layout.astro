@@ -1,15 +1,66 @@
 ---
-// src/layouts/Layout.astro
-import '../styles/global.css'; // <--- Esta línea es la que activa Tailwind
+import Navbar from '../components/Navbar.astro';
+import { ClientRouter } from 'astro:transitions';
+import Player from '../components/Player.astro';
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
 ---
-<!doctype html>
+
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Spotify Player</title>
+    <title>{title}</title>
+    <ClientRouter />
   </head>
-  <body>
-    <slot />
+  <body class="bg-[#09090b] text-zinc-100 selection:bg-[#1DB954]/30">
+    <Navbar />
+
+    <main class="mx-auto max-w-6xl px-4 pt-24 pb-8 md:px-8 md:pt-32">
+      <slot />
+    </main>
+
+    <Player />
+
+    <style is:global>
+      @import "tailwindcss";
+      /* ... tus estilos previos ... */
+    </style>
   </body>
 </html>
+
+<style is:global>
+  /* 1. IMPORTAR TAILWIND V4 */
+  @import "tailwindcss";
+
+  @font-face {
+    font-family: 'Circular';
+    src: url('/fonts/circular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: 'Geist Sans', system-ui, sans-serif;
+  }
+
+  /* 2. TUS ANIMACIONES (Opcional, si las moviste aquí) */
+  @theme {
+    --animate-music-1: bounce 0.6s infinite alternate;
+    --animate-music-2: bounce 0.8s infinite alternate 0.2s;
+    --animate-music-3: bounce 0.7s infinite alternate 0.4s;
+  }
+
+  @keyframes bounce {
+    0% { height: 4px; }
+    100% { height: 16px; }
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    border-radius: inherit;
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+// src/components/Player.astro
+---
+
+<div 
+  id="global-player" 
+  class="fixed bottom-6 left-1/2 z-[100] w-[95%] max-w-2xl -translate-x-1/2 translate-y-32 transition-transform duration-700 ease-out"
+>
+  <div class="flex items-center gap-4 rounded-2xl border border-white/10 bg-zinc-900/80 p-3 shadow-2xl backdrop-blur-xl">
+    <img id="player-img" src="" alt="" class="h-12 w-12 rounded-lg object-cover shadow-lg" />
+    
+    <div class="flex min-w-0 flex-1 flex-col">
+      <span id="player-name" class="truncate text-sm font-bold text-white"></span>
+      <span id="player-artist" class="truncate text-xs text-zinc-400"></span>
+    </div>
+
+    <div class="flex items-center gap-4 px-2">
+      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-105 active:scale-95">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Escuchamos el evento personalizado para actualizar el reproductor
+  document.addEventListener('spotify:play', (e: any) => {
+    const { name, artist, image } = e.detail;
+    const player = document.getElementById('global-player');
+    const img = document.getElementById('player-img') as HTMLImageElement;
+    const nameEl = document.getElementById('player-name');
+    const artistEl = document.getElementById('player-artist');
+
+    if (player && img && nameEl && artistEl) {
+      img.src = image;
+      nameEl.innerText = name;
+      artistEl.innerText = artist;
+      
+      // Mostrar el reproductor con una animación suave
+      player.classList.remove('translate-y-32');
+    }
+  });
+</script>

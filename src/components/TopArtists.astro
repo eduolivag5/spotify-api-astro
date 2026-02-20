@@ -1,0 +1,29 @@
+---
+import { getTopArtists } from '../lib/spotify';
+const artists = await getTopArtists(6);
+---
+
+<section class="rounded-3xl bg-zinc-900/30 border border-zinc-800/50 p-6">
+  <h3 class="font-bold text-zinc-400 uppercase text-[10px] tracking-[0.2em] mb-6 text-center md:text-left">Artistas en bucle</h3>
+  
+  <div class="grid grid-cols-3 gap-4 sm:grid-cols-6 md:grid-cols-3 lg:grid-cols-6">
+    {artists.map((artist) => (
+      <a href={`/artists/${artist.id}`} class="group flex flex-col items-center gap-3">
+        <div class="relative h-16 w-16 md:h-20 md:w-20">
+          <img 
+            src={artist.images[0]?.url} 
+            alt={artist.name}
+            class="h-full w-full object-cover rounded-full border border-white/5 transition-all duration-500 group-hover:scale-110 group-hover:border-[#1DB954]/50 group-hover:shadow-[0_0_20px_rgba(29,185,84,0.3)]"
+            transition:name={`artist-image-${artist.id}`}
+          />
+        </div>
+        <span 
+          class="w-full truncate text-center text-[10px] font-bold text-zinc-500 transition-colors group-hover:text-white"
+          transition:name={`artist-name-${artist.id}`}
+        >
+          {artist.name}
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
