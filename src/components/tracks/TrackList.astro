@@ -1,0 +1,98 @@
+---
+// src/components/album/TrackList.astro
+interface Props {
+  tracks: any[];
+  artistName?: string; // Opcional por si queremos forzar un nombre
+  albumImage?: string;
+  showAlbumColumn?: boolean; // Para activar/desactivar la columna de Álbum
+}
+
+const { tracks, artistName, albumImage, showAlbumColumn = true } = Astro.props;
+
+const formatDuration = (ms: number) => {
+  const min = Math.floor(ms / 60000);
+  const sec = Math.floor((ms % 60000) / 1000);
+  return `${min}:${sec.toString().padStart(2, '0')}`;
+};
+---
+
+<spotify-tracklist class="block rounded-2xl border border-zinc-800/40 bg-zinc-900/10 overflow-hidden shadow-2xl">
+  {/* Cabecera Universal */}
+  <div class="grid grid-cols-[48px_1fr_100px] md:grid-cols-[48px_2fr_1fr_100px] gap-4 px-6 py-4 border-b border-zinc-800/50 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 bg-white/[0.02]">
+    <div class="flex justify-center">#</div>
+    <div>Título</div>
+    <div class="hidden md:block">Álbum</div>
+    <div class="text-right">Duración</div>
+  </div>
+
+  <div class="flex flex-col">
+    {tracks.map((track, index) => {
+      // Priorizamos el artista del track, si no, el del prop
+      const artists = track.artists?.map((a: any) => a.name).join(', ') || artistName;
+      const displayAlbum = track.album?.name || "Single";
+      const displayImage = track.album?.images?.[0]?.url || albumImage;
+
+      return (
+        <button 
+          class="track-row group grid grid-cols-[48px_1fr_100px] md:grid-cols-[48px_2fr_1fr_100px] items-center gap-4 px-6 py-3 transition-all hover:bg-white/[0.04] text-left border-b border-zinc-800/10 last:border-0 w-full"
+          data-name={track.name}
+          data-artist={artists}
+          data-image={displayImage}
+        >
+          {/* Columna 1: Index / Play */}
+          <div class="flex items-center justify-center relative">
+            <span class="text-[11px] font-bold text-zinc-600 group-hover:opacity-0 transition-opacity font-mono">
+              {(index + 1).toString().padStart(2, '0')}
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="absolute hidden group-hover:block text-[#1DB954] animate-in fade-in zoom-in duration-200">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+
+          {/* Columna 2: Título y Artistas (Debajo) */}
+          <div class="flex flex-col min-w-0">
+            <span class="truncate text-sm font-bold text-zinc-200 group-hover:text-white transition-colors">
+              {track.name}
+            </span>
+            <span class="truncate text-[11px] font-semibold text-zinc-500 group-hover:text-[#1DB954] transition-colors">
+              {artists}
+            </span>
+          </div>
+
+          {/* Columna 3: Nombre del Álbum (Solo Desktop) */}
+          <div class="hidden md:block truncate text-xs font-medium text-zinc-500">
+            {displayAlbum}
+          </div>
+
+          {/* Columna 4: Duración */}
+          <div class="flex items-center justify-end gap-3 font-mono">
+             {track.explicit && (
+              <span class="text-[8px] font-black bg-zinc-800 text-zinc-500 px-1.5 py-0.5 rounded-sm border border-zinc-700/50">E</span>
+            )}
+            <span class="text-[10px] text-zinc-600 text-right font-bold group-hover:text-zinc-400 transition-colors uppercase">
+              {formatDuration(track.duration_ms)}
+            </span>
+          </div>
+        </button>
+      );
+    })}
+  </div>
+</spotify-tracklist>
+
+<script>
+  if (!customElements.get('spotify-tracklist')) {
+    customElements.define('spotify-tracklist', class extends HTMLElement {
+      constructor() {
+        super();
+        this.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('.track-row') as HTMLElement;
+          if (btn) {
+            document.dispatchEvent(new CustomEvent('spotify:play', { 
+              detail: { ...btn.dataset } 
+            }));
+          }
+        });
+      }
+    });
+  }
+</script>

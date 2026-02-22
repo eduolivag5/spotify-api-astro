@@ -1,0 +1,23 @@
+---
+import { getTopArtists } from "../../lib/spotify";
+import ArtistItem from "./ArtistItem.astro";
+
+const artists = await getTopArtists();
+---
+
+<section class="rounded-[2.5rem] bg-zinc-900/30 border border-white/5 p-8 w-full backdrop-blur-sm">
+  <h3 class="font-bold text-zinc-500 uppercase text-[10px] tracking-[0.4em] mb-8">
+    Artistas en bucle
+  </h3>
+  
+  <div class="flex flex-nowrap gap-4 overflow-x-auto no-scrollbar py-6 snap-x scroll-px-6">
+    {artists.map((artist) => (
+      <ArtistItem 
+        id={artist.id}
+        name={artist.name}
+        image={artist.images[0]?.url}
+        size="md"
+      />
+    ))}
+  </div>
+</section>

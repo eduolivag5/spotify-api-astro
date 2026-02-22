@@ -1,0 +1,82 @@
+---
+import type { SpotifyAlbum } from '../../types/spotify';
+import SectionHeader from '../SectionHeader.astro';
+import AlbumItem from './AlbumItem.astro';
+
+interface Props {
+  title: string;
+  items: SpotifyAlbum[];
+}
+
+const { title, items } = Astro.props;
+const id = `carousel-${title.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<section class="flex flex-col gap-4"> <div class="flex items-center justify-between px-2">
+    <div class="flex items-center gap-3">
+      <SectionHeader title={title} />
+      <span class="hidden sm:block text-[8px] text-zinc-500 font-black uppercase tracking-[0.2em] bg-white/5 px-2 py-0.5 rounded-full border border-white/5">
+        {items.length}
+      </span>
+    </div>
+
+    <div class="flex items-center gap-1.5"> <button 
+        data-direction="left" 
+        data-target={id}
+        class="p-1.5 rounded-full bg-zinc-900/50 border border-white/5 text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all active:scale-90"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button 
+        data-direction="right" 
+        data-target={id}
+        class="p-1.5 rounded-full bg-zinc-900/50 border border-white/5 text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all active:scale-90"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div 
+    id={id}
+    class="flex overflow-x-auto gap-3 scroll-smooth no-scrollbar snap-x px-2 pb-4"
+  >
+    {items.map(item => (
+      /* min-w reducido para mayor densidad */
+      <div class="min-w-[140px] md:min-w-[170px] flex-shrink-0 snap-start">
+        <AlbumItem album={item} />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+
+<script>
+  function initCarousel() {
+    const buttons = document.querySelectorAll('button[data-direction]');
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const direction = btn.getAttribute('data-direction');
+        const targetId = btn.getAttribute('data-target');
+        const container = document.getElementById(targetId!);
+        
+        if (container) {
+          // Scroll más preciso
+          const scrollAmount = container.clientWidth * 0.7;
+          container.scrollBy({
+            left: direction === 'left' ? -scrollAmount : scrollAmount,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  }
+
+  initCarousel();
+  document.addEventListener('astro:after-swap', initCarousel);
+</script>

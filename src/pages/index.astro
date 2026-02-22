@@ -1,51 +1,75 @@
 ---
+import TopArtists from '../components/artists/TopArtists.astro';
 import Layout from '../layouts/Layout.astro';
-import RecentTracks from '../components/RecentTracks.astro';
-import TopArtists from '../components/TopArtists.astro';
+import History from './history.astro';
+
+const hour = new Date().getHours();
+const greeting = hour < 12 ? 'Buenos días' : hour < 20 ? 'Buenas tardes' : 'Buenas noches';
 ---
 
-<Layout title="Sound Archive | My Spotify Dashboard">
-  <header class="mb-12">
-    <h1 class="text-4xl md:text-6xl font-black tracking-tighter">
-      Sound <span class="text-[#1DB954]">Archive.</span>
+<Layout title="Spotify | Dashboard">
+  
+  <header class="relative mb-14 px-4">
+    <div class="absolute -top-20 -left-20 h-80 w-80 rounded-full bg-[#1DB954]/10 blur-[120px] -z-10 animate-pulse"></div>
+    <h1 class="text-5xl font-black tracking-tighter text-white md:text-8xl">
+      {greeting}
     </h1>
-    <p class="mt-2 text-zinc-500 font-medium">Curando mi propia biblioteca musical.</p>
   </header>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="flex flex-col gap-12 pb-20">
 
-    <aside class="flex flex-col gap-6">
-      <TopArtists />
-
-      <div class="group relative overflow-hidden rounded-3xl bg-[#1DB954] p-8 text-black transition-all hover:bg-[#1ed760]">
-        <div class="relative z-10">
-          <h2 class="text-2xl font-black leading-tight mb-4 tracking-tight">Focus & Flow</h2>
-          <p class="mb-6 text-sm font-bold opacity-80 uppercase tracking-wide">Mi Playlist de Programación</p>
-          <a href="#" class="inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-black text-white transition-transform active:scale-95 group-hover:shadow-xl">
-            Escuchar ahora
-          </a>
-        </div>
-        <div class="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-black/10 blur-3xl"></div>
+    <section>
+      <header class="mb-6 flex flex-col px-4">
+        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500 mb-1 cursor-default">Descubrimiento</span>
+        <h2 class="w-fit text-3xl font-black tracking-tighter text-white hover:text-[#1DB954] transition-colors cursor-default">Artistas en bucle</h2>
+      </header>
+      
+      <div class="rounded-[2.5rem] border border-white/5 bg-zinc-900/20 p-2 backdrop-blur-md">
+        <TopArtists />
       </div>
+    </section>
 
-      <div class="rounded-3xl bg-zinc-900/50 border border-zinc-800/50 p-6">
-        <h3 class="font-bold text-zinc-400 uppercase text-[10px] tracking-[0.2em] mb-4 text-center">Frecuencias Dominantes</h3>
-        <div class="flex flex-wrap justify-center gap-2">
-          {['Lo-fi', 'Indie Rock', 'Phonk', 'Techno', 'Jazz'].map(genre => (
-            <span class="rounded-full bg-zinc-950 px-4 py-1.5 text-[11px] font-bold text-zinc-300 border border-zinc-800 hover:border-[#1DB954] transition-colors cursor-default">
+    <section>
+      <header class="mb-6 flex flex-col px-4">
+        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500 mb-1 cursor-default">Actividad</span>
+        <h2 class="w-fit text-3xl font-black tracking-tighter text-white hover:text-[#1DB954] transition-colors cursor-default">Recientemente escuchado</h2>
+      </header>
+      
+      <div class="rounded-[2.5rem] border border-white/5 bg-zinc-900/20 p-1 backdrop-blur-md overflow-hidden">
+        <History />
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+      
+      <section class="group relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-[2.5rem] border border-white/10 p-10 cursor-pointer">
+        <div class="absolute inset-0 -z-10 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black transition-transform duration-1000 group-hover:scale-110"></div>
+        <div class="absolute right-10 top-10 h-32 w-32 rounded-full bg-[#1DB954]/20 blur-[60px] transition-all group-hover:bg-[#1DB954]/40"></div>
+        
+        <div class="relative">
+          <span class="mb-2 block text-[10px] font-black uppercase tracking-[0.4em] text-[#1DB954]">Sugerencia</span>
+          <h2 class="mb-6 text-4xl font-black tracking-tighter text-white">Radar de Novedades</h2>
+          <button class="w-fit rounded-full bg-white px-8 py-3.5 text-[11px] font-black uppercase tracking-[0.2em] text-black shadow-2xl transition-all hover:scale-105 active:scale-95">
+            Reproducir ahora
+          </button>
+        </div>
+      </section>
+
+      <section class="flex flex-col justify-between rounded-[2.5rem] border border-white/5 bg-zinc-900/30 p-10 backdrop-blur-xl">
+        <div class="mb-8 flex flex-col">
+          <span class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500 mb-1">Análisis</span>
+          <h2 class="text-3xl font-black tracking-tighter text-white">Tus Géneros</h2>
+        </div>
+        
+        <div class="flex flex-wrap gap-3">
+          {['Techno', 'Indie Rock', 'Jazz Fusion', 'Ambient', 'Phonk', 'Deep House'].map(genre => (
+            <span class="cursor-pointer rounded-xl border border-white/5 bg-white/5 px-5 py-3 text-[12px] font-black uppercase tracking-tighter text-zinc-400 transition-all hover:border-[#1DB954] hover:bg-white/[0.08] hover:text-white">
               {genre}
             </span>
           ))}
         </div>
-      </div>
-    </aside>
+      </section>
 
+    </div>
   </div>
-
-  <footer class="mt-24 border-t border-zinc-900 py-10 flex flex-col items-center gap-4">
-    <div class="h-1 w-12 rounded-full bg-zinc-800"></div>
-    <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600">
-      Spotify API Data Pipeline • 2026
-    </p>
-  </footer>
 </Layout>

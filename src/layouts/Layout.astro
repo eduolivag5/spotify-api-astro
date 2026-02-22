@@ -1,7 +1,9 @@
 ---
 import Navbar from '../components/Navbar.astro';
-import { ClientRouter } from 'astro:transitions';
 import Player from '../components/Player.astro';
+import { ClientRouter } from 'astro:transitions';
+import Sidebar from '../components/Sidebar.astro';
+
 interface Props {
   title: string;
 }
@@ -16,51 +18,93 @@ const { title } = Astro.props;
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="bg-[#09090b] text-zinc-100 selection:bg-[#1DB954]/30">
-    <Navbar />
+  <body class="bg-[#000000] text-zinc-100 selection:bg-[#1DB954]/30 overflow-hidden h-screen grid-layout">
+    
+    <header class="[grid-area:header] z-50">
+      <Navbar />
+    </header>
 
-    <main class="mx-auto max-w-6xl px-4 pt-24 pb-8 md:px-8 md:pt-32">
-      <slot />
+    <aside class="[grid-area:aside] flex-col flex overflow-y-auto bg-zinc-900 rounded-lg m-2">
+      <Sidebar />
+    </aside>
+
+    <main class="[grid-area:main] overflow-y-auto bg-zinc-900 rounded-lg m-2 ml-0">
+      <div class="px-6 py-4">
+        <slot />
+      </div>
     </main>
 
-    <Player />
+    <footer class="[grid-area:player] min-h-[90px] bg-black flex items-center px-4">
+      <Player />
+    </footer>
 
     <style is:global>
       @import "tailwindcss";
-      /* ... tus estilos previos ... */
+
+      /* Estructura de Grid estilo Spotify */
+      .grid-layout {
+        display: grid;
+        grid-template-areas:
+          "header header"
+          "aside main"
+          "player player";
+        grid-template-columns: 300px 1fr;
+        grid-template-rows: auto 1fr auto;
+        height: 100vh;
+      }
+
+      /* Responsivo: En móviles colapsamos el sidebar si quieres */
+      @media (max-width: 768px) {
+        .grid-layout {
+          grid-template-areas:
+            "header"
+            "main"
+            "player";
+          grid-template-columns: 1fr;
+        }
+        aside { display: none; }
+      }
+
+      @font-face {
+        font-family: 'Circular';
+        src: url('/fonts/circular.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+      
+      body {
+        font-family: 'Geist Sans', system-ui, sans-serif;
+      }
+
+      /* Dentro de tu bloque <style> en el Layout */
+      footer {
+        grid-area: player;
+        background-color: #000000; /* Fondo negro sólido como Spotify */
+        border-top: 1px solid rgba(255, 255, 255, 0.1); /* Delgada línea superior */
+        z-index: 100;
+      }
+
+      @theme {
+        --animate-music-1: bounce 0.6s infinite alternate;
+        --animate-music-2: bounce 0.8s infinite alternate 0.2s;
+        --animate-music-3: bounce 0.7s infinite alternate 0.4s;
+      }
+
+      @keyframes bounce {
+        0% { height: 4px; }
+        100% { height: 16px; }
+      }
+
+      /* Scrollbar estilo Spotify (más fino) */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.1);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.2);
+      }
     </style>
   </body>
 </html>
-
-<style is:global>
-  /* 1. IMPORTAR TAILWIND V4 */
-  @import "tailwindcss";
-
-  @font-face {
-    font-family: 'Circular';
-    src: url('/fonts/circular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  body {
-    font-family: 'Geist Sans', system-ui, sans-serif;
-  }
-
-  /* 2. TUS ANIMACIONES (Opcional, si las moviste aquí) */
-  @theme {
-    --animate-music-1: bounce 0.6s infinite alternate;
-    --animate-music-2: bounce 0.8s infinite alternate 0.2s;
-    --animate-music-3: bounce 0.7s infinite alternate 0.4s;
-  }
-
-  @keyframes bounce {
-    0% { height: 4px; }
-    100% { height: 16px; }
-  }
-
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    border-radius: inherit;
-  }
-</style>

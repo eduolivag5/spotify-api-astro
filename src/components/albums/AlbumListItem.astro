@@ -1,0 +1,38 @@
+---
+import type { SpotifyAlbum } from '../../types/spotify';
+
+interface Props {
+  album: SpotifyAlbum;
+}
+
+const { album } = Astro.props;
+---
+<li class="list-none">
+  <a
+    href={`/album/${album.id}`}
+    class="flex items-center gap-3 p-2 rounded-lg transition-all duration-300 group hover:bg-white/5 active:scale-[0.98]"
+  >
+    <div class="relative h-12 w-12 flex-shrink-0 shadow-lg">
+      <img 
+        src={album.images?.[0]?.url} 
+        alt={album.name}
+        class="h-full w-full object-cover rounded-md border border-white/5"
+        transition:name={`album-image-${album.id}`}
+      />
+      <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
+        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5.14v13.72l11-6.86L8 5.14Z"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="flex flex-col min-w-0 overflow-hidden">
+      <span class="text-sm font-semibold text-zinc-100 truncate group-hover:text-white">
+        {album.name}
+      </span>
+      <span class="text-xs text-zinc-400 font-medium truncate group-hover:text-zinc-300">
+        Álbum • {album.artists?.[0]?.name}
+      </span>
+    </div>
+  </a>
+</li>

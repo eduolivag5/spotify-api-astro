@@ -41,7 +41,7 @@ export interface SpotifyAlbum {
   total_tracks: number;
   external_urls: { spotify: string };
   images: { url: string }[];
-  artists: SpotifyArtist[]; // El artista principal del álbum
+  artists: SpotifyArtist[];
   tracks?: {
     items: SpotifyTrack['item'][];
   };
