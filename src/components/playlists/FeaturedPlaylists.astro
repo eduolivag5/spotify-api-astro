@@ -1,0 +1,14 @@
+---
+import { getFeaturedPlaylists } from "../../lib/spotify";
+import PlaylistItem from "./PlaylistItem.astro";
+
+const playlists = await getFeaturedPlaylists(10);
+---
+
+<div class="w-full">
+  <div class="flex flex-nowrap items-center justify-between gap-4 overflow-hidden py-2">
+    {playlists.map((playlist) => (
+      <PlaylistItem playlist={playlist} />
+    ))}
+  </div>
+</div>

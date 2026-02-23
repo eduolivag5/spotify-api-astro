@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css'; // <--- IMPORTACIÓN CRÍTICA AQUÍ
 import Navbar from '../components/Navbar.astro';
 import Player from '../components/Player.astro';
 import { ClientRouter } from 'astro:transitions';
@@ -14,97 +15,28 @@ const { title } = Astro.props;
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="bg-[#000000] text-zinc-100 selection:bg-[#1DB954]/30 overflow-hidden h-screen grid-layout">
+  <body class="bg-black text-zinc-100 selection:bg-[#1DB954]/30 overflow-hidden h-[100dvh] grid-layout">
     
-    <header class="[grid-area:header] z-50">
+    <header class="[grid-area:header]">
       <Navbar />
     </header>
 
-    <aside class="[grid-area:aside] flex-col flex overflow-y-auto bg-zinc-900 rounded-lg m-2">
+    <aside class="hidden md:flex [grid-area:aside] flex-col overflow-y-auto bg-zinc-900 rounded-xl m-2 md:mb-2">
       <Sidebar />
     </aside>
 
-    <main class="[grid-area:main] overflow-y-auto bg-zinc-900 rounded-lg m-2 ml-0">
-      <div class="px-6 py-4">
+    <main class="[grid-area:main] overflow-y-auto bg-transparent md:bg-zinc-900 rounded-xl md:m-2 md:ml-0 md:mb-2 relative">
+      <div class="px-4 md:px-6 py-4 pb-40 md:pb-28">
         <slot />
       </div>
     </main>
 
-    <footer class="[grid-area:player] min-h-[90px] bg-black flex items-center px-4">
-      <Player />
-    </footer>
-
-    <style is:global>
-      @import "tailwindcss";
-
-      /* Estructura de Grid estilo Spotify */
-      .grid-layout {
-        display: grid;
-        grid-template-areas:
-          "header header"
-          "aside main"
-          "player player";
-        grid-template-columns: 300px 1fr;
-        grid-template-rows: auto 1fr auto;
-        height: 100vh;
-      }
-
-      /* Responsivo: En móviles colapsamos el sidebar si quieres */
-      @media (max-width: 768px) {
-        .grid-layout {
-          grid-template-areas:
-            "header"
-            "main"
-            "player";
-          grid-template-columns: 1fr;
-        }
-        aside { display: none; }
-      }
-
-      @font-face {
-        font-family: 'Circular';
-        src: url('/fonts/circular.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-      }
-      
-      body {
-        font-family: 'Geist Sans', system-ui, sans-serif;
-      }
-
-      /* Dentro de tu bloque <style> en el Layout */
-      footer {
-        grid-area: player;
-        background-color: #000000; /* Fondo negro sólido como Spotify */
-        border-top: 1px solid rgba(255, 255, 255, 0.1); /* Delgada línea superior */
-        z-index: 100;
-      }
-
-      @theme {
-        --animate-music-1: bounce 0.6s infinite alternate;
-        --animate-music-2: bounce 0.8s infinite alternate 0.2s;
-        --animate-music-3: bounce 0.7s infinite alternate 0.4s;
-      }
-
-      @keyframes bounce {
-        0% { height: 4px; }
-        100% { height: 16px; }
-      }
-
-      /* Scrollbar estilo Spotify (más fino) */
-      ::-webkit-scrollbar {
-        width: 12px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(255,255,255,0.1);
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255,255,255,0.2);
-      }
-    </style>
+    <div class="fixed bottom-0 left-0 right-0 z-[100] px-2 pb-4 md:pb-8 pointer-events-none">
+       <Player transition:persist />
+    </div>
   </body>
 </html>

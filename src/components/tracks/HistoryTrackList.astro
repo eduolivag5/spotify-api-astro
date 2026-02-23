@@ -1,0 +1,15 @@
+---
+import { getRecentlyPlayed } from "../../lib/spotify";
+import TrackItem from "./TrackItem.astro";
+
+// Traemos los primeros 10 tracks del historial
+const trackItems = await getRecentlyPlayed(10);
+---
+
+<div class="w-full">
+  <div class="flex flex-nowrap items-center justify-between gap-4 overflow-hidden py-2">
+    {trackItems.map((item) => (
+      <TrackItem track={item.track} />
+    ))}
+  </div>
+</div>

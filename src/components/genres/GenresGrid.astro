@@ -1,0 +1,30 @@
+---
+const GENRES = [
+  'Techno', 'Indie Rock', 'Jazz Fusion', 'Ambient', 
+  'Phonk', 'Deep House', 'Lofi', 'Post-Punk', 
+  'Hyperpop', 'Dream Pop'
+];
+---
+
+<div class="w-full">
+  <div class="flex flex-wrap gap-3 py-2">
+    {GENRES.map((genre) => (
+      <div 
+        class="relative px-6 py-3 rounded-2xl
+               bg-white/[0.03] backdrop-blur-md
+               border border-white/10
+               shadow-[0_4px_20px_rgba(0,0,0,0.2)]
+               hover:bg-white/[0.08] hover:border-[#1DB954]/40 hover:scale-[1.05]
+               transition-all duration-300 ease-out
+               cursor-default group overflow-hidden"
+      >
+        {/* Brillo interno al hacer hover */}
+        <div class="absolute inset-0 bg-gradient-to-tr from-[#1DB954]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        
+        <span class="relative text-[11px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover:text-white transition-colors">
+          {genre}
+        </span>
+      </div>
+    ))}
+  </div>
+</div>

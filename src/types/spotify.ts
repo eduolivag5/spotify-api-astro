@@ -53,3 +53,37 @@ export interface RecentlyPlayed {
     played_at: string;
   }[];
 }
+
+export interface SpotifyPlaylist {
+  id: string;
+  name: string;
+  description: string;
+  collaborative: boolean;
+  external_urls: { spotify: string };
+  images: { url: string; height?: number; width?: number; }[];
+  owner: {
+    display_name: string;
+    id: string;
+    external_urls: { spotify: string };
+  };
+  public: boolean;
+  tracks: {
+    href: string;
+    total: number;
+  };
+  type: string;
+  uri: string;
+}
+
+export interface FeaturedPlaylistsResponse {
+  message?: string;
+  playlists: {
+    href: string;
+    items: SpotifyPlaylist[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}

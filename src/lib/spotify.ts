@@ -1,5 +1,5 @@
 // src/lib/spotify.ts
-import type { RecentlyPlayed, SpotifyAlbum, SpotifyArtist, SpotifyTrack } from '../types/spotify';
+import type { FeaturedPlaylistsResponse, RecentlyPlayed, SpotifyAlbum, SpotifyArtist, SpotifyTrack } from '../types/spotify';
 
 const client_id = import.meta.env.SPOTIFY_CLIENT_ID;
 const client_secret = import.meta.env.SPOTIFY_CLIENT_SECRET;
@@ -186,4 +186,13 @@ export const getUserSavedAlbums = async (limit = 10, offset = 0) => {
   
   // Retorna el array de items que contiene { added_at, album }
   return data?.items ?? [];
+};
+
+export const getFeaturedPlaylists = async (limit = 10) => {
+  const data = await spotifyFetch<FeaturedPlaylistsResponse>(
+    `/browse/featured-playlists?limit=${limit}&market=ES`
+  );
+  
+  // Devolvemos los items de la propiedad playlists
+  return data?.playlists?.items ?? [];
 };

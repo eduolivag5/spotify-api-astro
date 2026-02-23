@@ -1,75 +1,55 @@
 ---
 import TopArtists from '../components/artists/TopArtists.astro';
 import Layout from '../layouts/Layout.astro';
-import History from './history.astro';
+import SectionContainer from '../components/SectionContainer.astro';
+import FeaturedPlaylists from '../components/playlists/FeaturedPlaylists.astro';
+import HistoryTrackList from '../components/tracks/HistoryTrackList.astro';
+import GenresGrid from '../components/genres/GenresGrid.astro';
+import HighlightedAlbum from '../components/albums/HighlightedAlbum.astro';
 
-const hour = new Date().getHours();
-const greeting = hour < 12 ? 'Buenos días' : hour < 20 ? 'Buenas tardes' : 'Buenas noches';
+const HIGHLIGHTED_ALBUM_ID = import.meta.env.SPOTIFY_HIGHLIGHTED_ALBUM_ID;
 ---
 
 <Layout title="Spotify | Dashboard">
-  
-  <header class="relative mb-14 px-4">
-    <div class="absolute -top-20 -left-20 h-80 w-80 rounded-full bg-[#1DB954]/10 blur-[120px] -z-10 animate-pulse"></div>
-    <h1 class="text-5xl font-black tracking-tighter text-white md:text-8xl">
-      {greeting}
-    </h1>
-  </header>
 
-  <div class="flex flex-col gap-12 pb-20">
+  <div class="flex flex-col gap-8 pb-32">
+    
+    <SectionContainer 
+      title="Artistas en bucle"
+      linkText="Mostrar todos"
+      href="/top-artists"
+    >
+      <TopArtists />
+    </SectionContainer>
 
-    <section>
-      <header class="mb-6 flex flex-col px-4">
-        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500 mb-1 cursor-default">Descubrimiento</span>
-        <h2 class="w-fit text-3xl font-black tracking-tighter text-white hover:text-[#1DB954] transition-colors cursor-default">Artistas en bucle</h2>
-      </header>
-      
-      <div class="rounded-[2.5rem] border border-white/5 bg-zinc-900/20 p-2 backdrop-blur-md">
-        <TopArtists />
-      </div>
-    </section>
+    <SectionContainer 
+      title="Recientemente escuchado"
+      linkText="Mostrar todos"
+      href="/history"
+    >
+      <HistoryTrackList />
+    </SectionContainer>
 
-    <section>
-      <header class="mb-6 flex flex-col px-4">
-        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500 mb-1 cursor-default">Actividad</span>
-        <h2 class="w-fit text-3xl font-black tracking-tighter text-white hover:text-[#1DB954] transition-colors cursor-default">Recientemente escuchado</h2>
-      </header>
-      
-      <div class="rounded-[2.5rem] border border-white/5 bg-zinc-900/20 p-1 backdrop-blur-md overflow-hidden">
-        <History />
-      </div>
-    </section>
+    <SectionContainer 
+      title="Playlists recomendadas"
+      linkText="Mostrar todos"
+      href="/featured"
+    >
+      <FeaturedPlaylists />
+    </SectionContainer>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-      
-      <section class="group relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-[2.5rem] border border-white/10 p-10 cursor-pointer">
-        <div class="absolute inset-0 -z-10 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black transition-transform duration-1000 group-hover:scale-110"></div>
-        <div class="absolute right-10 top-10 h-32 w-32 rounded-full bg-[#1DB954]/20 blur-[60px] transition-all group-hover:bg-[#1DB954]/40"></div>
-        
-        <div class="relative">
-          <span class="mb-2 block text-[10px] font-black uppercase tracking-[0.4em] text-[#1DB954]">Sugerencia</span>
-          <h2 class="mb-6 text-4xl font-black tracking-tighter text-white">Radar de Novedades</h2>
-          <button class="w-fit rounded-full bg-white px-8 py-3.5 text-[11px] font-black uppercase tracking-[0.2em] text-black shadow-2xl transition-all hover:scale-105 active:scale-95">
-            Reproducir ahora
-          </button>
-        </div>
-      </section>
+    <SectionContainer
+      title="Álbum destacado"
+      linkText="Ver álbum"
+      href={`/album/${HIGHLIGHTED_ALBUM_ID}`}
+    >
+      <HighlightedAlbum albumId={HIGHLIGHTED_ALBUM_ID} />
+    </SectionContainer>
 
-      <section class="flex flex-col justify-between rounded-[2.5rem] border border-white/5 bg-zinc-900/30 p-10 backdrop-blur-xl">
-        <div class="mb-8 flex flex-col">
-          <span class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500 mb-1">Análisis</span>
-          <h2 class="text-3xl font-black tracking-tighter text-white">Tus Géneros</h2>
-        </div>
-        
-        <div class="flex flex-wrap gap-3">
-          {['Techno', 'Indie Rock', 'Jazz Fusion', 'Ambient', 'Phonk', 'Deep House'].map(genre => (
-            <span class="cursor-pointer rounded-xl border border-white/5 bg-white/5 px-5 py-3 text-[12px] font-black uppercase tracking-tighter text-zinc-400 transition-all hover:border-[#1DB954] hover:bg-white/[0.08] hover:text-white">
-              {genre}
-            </span>
-          ))}
-        </div>
-      </section>
-
-    </div>
+    <SectionContainer 
+      title="Tus Géneros"
+    >
+      <GenresGrid />
+    </SectionContainer>
   </div>
 </Layout>

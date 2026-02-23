@@ -1,0 +1,59 @@
+---
+import type { SpotifyPlaylist } from '../../types/spotify';
+
+interface Props {
+  playlist: SpotifyPlaylist;
+}
+
+const { playlist } = Astro.props;
+---
+
+<a 
+  href={playlist.external_urls.spotify} 
+  target="_blank"
+  class="group relative flex flex-col p-2.5 rounded-[1.5rem] 
+         bg-white/[0.03] backdrop-blur-md
+         border border-white/10
+         shadow-[0_8px_32px_rgba(0,0,0,0.3)]
+         hover:bg-white/[0.08] hover:scale-[1.02]
+         transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
+         w-full max-w-[140px] overflow-hidden flex-shrink-0"
+>
+  {/* Reflejo superior sutil */}
+  <div class="absolute inset-0 bg-gradient-to-br from-white/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+  {/* Portada de Playlist */}
+  <div class="relative aspect-square overflow-hidden rounded-xl bg-zinc-800 mb-3 shadow-[inset_0_0_12px_rgba(0,0,0,0.4)]">
+    <img 
+      src={playlist.images[0]?.url} 
+      alt={playlist.name}
+      class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+      loading="lazy"
+    />
+    
+    {/* Play Button Overlay */}
+    <div class="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+       <div class="bg-[#1DB954] p-2 rounded-full shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+       </div>
+    </div>
+  </div>
+
+  {/* Textos */}
+  <div class="flex flex-col gap-1 px-1">
+    <h3 class="text-[10px] font-black tracking-widest text-white/80 group-hover:text-white truncate uppercase">
+      {playlist.name}
+    </h3>
+    <p class="text-[8px] font-medium text-zinc-500 truncate">
+      Por {playlist.owner.display_name}
+    </p>
+  </div>
+</a>
+
+<style>
+  a {
+    box-shadow: 
+      0 10px 30px -10px rgba(0, 0, 0, 0.5),
+      inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  }
+</style>
