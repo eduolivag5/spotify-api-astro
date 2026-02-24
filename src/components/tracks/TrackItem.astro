@@ -1,57 +1,12 @@
 ---
-import type { SpotifyTrack } from '../../types/spotify';
-
-interface Props {
-  track: SpotifyTrack['item'];
-}
+import MediaCard from "../MediaCard.astro";
 
 const { track } = Astro.props;
-const artistNames = track.artists.map(a => a.name).join(', ');
 ---
-
-<div 
-  class="group relative flex flex-col p-2.5 rounded-xl 
-         bg-white/[0.03] backdrop-blur-md
-         border border-white/10
-         shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_0_0_1px_rgba(255,255,255,0.05)]
-         hover:bg-white/[0.08] hover:scale-[1.02]
-         transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
-         w-full max-w-[160px] overflow-hidden"
->
-  {/* Reflejo superior (Glossy effect) */}
-  <div class="absolute inset-0 bg-gradient-to-br from-white/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-  {/* Contenedor de Imagen con bisel interno */}
-  <div class="relative aspect-square overflow-hidden rounded-xl bg-zinc-800 shadow-[inset_0_0_12px_rgba(0,0,0,0.2)] mb-2.5">
-    <img 
-      src={track.album.images[0]?.url} 
-      class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
-      alt={track.name}
-      loading="lazy"
-    />
-  </div>
-
-  {/* Texto con tipografía nítida */}
-  <div class="relative flex flex-col px-0.5 min-w-0">
-    <h3 
-      class="text-[10px] font-black tracking-tight truncate text-white/90 group-hover:text-white transition-colors" 
-      title={track.name}
-    >
-      {track.name}
-    </h3>
-    
-    <div class="flex items-center gap-1.5 mt-1 overflow-hidden">
-      <span class="text-[9px] text-[#1DB954] font-bold truncate tracking-wider uppercase">
-        {artistNames}
-      </span>
-    </div>
-  </div>
-</div>
-
-<style>
-  div {
-    box-shadow: 
-      0 10px 30px -10px rgba(0, 0, 0, 0.5),
-      inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  }
-</style>
+<MediaCard 
+  href={track.external_urls.spotify}
+  title={track.name}
+  subtitle={track.artists[0].name}
+  image={track.album.images[0]?.url}
+  type="track"
+/>

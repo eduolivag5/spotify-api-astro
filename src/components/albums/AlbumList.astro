@@ -6,30 +6,24 @@ import AlbumListItem from "./AlbumListItem.astro";
 const savedItems = await getUserSavedAlbums(20);
 ---
 
-<ul class="flex flex-col gap-0.5 px-2 overflow-y-auto overflow-x-hidden flex-1 custom-scrollbar pb-4">
+<ul 
+  class="flex flex-col gap-0.5 px-2 flex-1 pb-4 overflow-y-auto overflow-x-hidden 
+         [scrollbar-width:thin] [scrollbar-color:transparent_transparent] hover:[scrollbar-color:rgba(255,255,255,0.1)_transparent]
+         [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-white/10 
+         [&::-webkit-scrollbar-thumb]:rounded-full
+         isolate [transform:translateZ(0)]"
+>
   {
     savedItems.length > 0 ? (
       savedItems.map(({ album }: { album: SpotifyAlbum }) => (
-        <AlbumListItem album={album} />
+        <li class="[content-visibility:auto] [contain-intrinsic-size:0_64px] [transform:translateZ(0)]">
+          <AlbumListItem album={album} />
+        </li>
       ))
     ) : (
-      <li class="p-4 text-xs text-zinc-500 text-center italic">
+      <li class="p-4 text-xs text-zinc-500 text-center italic antialiased">
         Tu biblioteca está vacía.
       </li>
     )
   }
 </ul>
-
-<style>
-  /* Scrollbar Invisible por defecto, aparece al hacer hover */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 10px;
-  }
-  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-  }
-</style>

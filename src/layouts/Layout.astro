@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css'; // <--- IMPORTACIÓN CRÍTICA AQUÍ
+import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Player from '../components/Player.astro';
 import { ClientRouter } from 'astro:transitions';
@@ -12,30 +12,30 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<html lang="es">
+<html lang="es" class="bg-black">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="bg-black text-zinc-100 selection:bg-[#1DB954]/30 overflow-hidden h-[100dvh] grid-layout">
+  <body class="bg-black text-zinc-100 selection:bg-[#1DB954]/30 overflow-hidden h-[100dvh] grid-layout antialiased [text-rendering:optimizeLegibility]">
     
-    <header class="[grid-area:header]">
+    <header class="[grid-area:header] z-50 [transform:translateZ(0)]">
       <Navbar />
     </header>
 
-    <aside class="hidden md:flex [grid-area:aside] flex-col overflow-y-auto bg-zinc-900 rounded-xl m-2 md:mb-2">
+    <aside class="hidden md:flex [grid-area:aside] flex-col overflow-y-auto bg-zinc-900 rounded-xl m-2 md:mb-2 isolate [transform:translateZ(0)] [backface-visibility:hidden]">
       <Sidebar />
     </aside>
 
-    <main class="[grid-area:main] overflow-y-auto bg-transparent md:bg-zinc-900 rounded-xl md:m-2 md:ml-0 md:mb-2 relative">
-      <div class="px-4 md:px-6 py-4 pb-40 md:pb-28">
+    <main class="[grid-area:main] overflow-y-auto bg-transparent md:bg-zinc-900 rounded-xl md:m-2 md:ml-0 md:mb-2 relative isolate [transform:translateZ(0)] [backface-visibility:hidden] overscroll-behavior-y-contain">
+      <div class="px-4 md:px-6 py-4 pb-40 md:pb-28 will-change-transform">
         <slot />
       </div>
     </main>
 
-    <div class="fixed bottom-0 left-0 right-0 z-[100] px-2 pb-4 md:pb-8 pointer-events-none">
+    <div class="fixed bottom-0 left-0 right-0 z-[100] px-2 pb-4 md:pb-8 pointer-events-none [transform:translateZ(0)]">
        <Player transition:persist />
     </div>
   </body>

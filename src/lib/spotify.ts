@@ -1,5 +1,5 @@
 // src/lib/spotify.ts
-import type { FeaturedPlaylistsResponse, RecentlyPlayed, SpotifyAlbum, SpotifyArtist, SpotifyTrack } from '../types/spotify';
+import type { RecentlyPlayed, SpotifyAlbum, SpotifyArtist, SpotifyPaging, SpotifyPlaylist, SpotifyTrack } from '../types/spotify';
 
 const client_id = import.meta.env.SPOTIFY_CLIENT_ID;
 const client_secret = import.meta.env.SPOTIFY_CLIENT_SECRET;
@@ -116,8 +116,6 @@ export const getArtistData = async (id: string) => {
 
   const allItems = allAlbumsData?.items ?? [];
 
-  console.log(allItems)
-
   return {
     artist,
     albums: allItems.filter(item => item.album_type === 'album'),
@@ -188,11 +186,11 @@ export const getUserSavedAlbums = async (limit = 10, offset = 0) => {
   return data?.items ?? [];
 };
 
-export const getFeaturedPlaylists = async (limit = 10) => {
-  const data = await spotifyFetch<FeaturedPlaylistsResponse>(
-    `/browse/featured-playlists?limit=${limit}&market=ES`
+export const getUserSavedPlaylists = async (limit = 10) => {
+  // Le decimos que la respuesta es un Paging de tipo SpotifyPlaylist
+  const data = await spotifyFetch<SpotifyPaging<SpotifyPlaylist>>(
+    `/me/playlists?limit=${limit}`
   );
-  
-  // Devolvemos los items de la propiedad playlists
-  return data?.playlists?.items ?? [];
+
+  return data?.items ?? [];
 };

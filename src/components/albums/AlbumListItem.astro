@@ -7,30 +7,37 @@ interface Props {
 
 const { album } = Astro.props;
 ---
-<li class="list-none">
+<li class="list-none [transform:translateZ(0)]">
   <a
     href={`/album/${album.id}`}
-    class="flex items-center gap-3 p-2 rounded-lg transition-all duration-300 group hover:bg-white/5 active:scale-[0.98]"
+    class="flex items-center gap-3 p-2 rounded-lg transition-all duration-300 group 
+           hover:bg-white/5 active:scale-[0.98] outline-none
+           [transform:translateZ(0)] [backface-visibility:hidden] will-change-transform"
   >
-    <div class="relative h-12 w-12 flex-shrink-0 shadow-lg">
+    <div class="relative h-12 w-12 flex-shrink-0 shadow-lg [transform:translateZ(0)]">
       <img 
         src={album.images?.[0]?.url} 
         alt={album.name}
-        class="h-full w-full object-cover rounded-md border border-white/5"
+        class="h-full w-full object-cover rounded-md border border-white/5 [backface-visibility:hidden]"
+        loading="lazy"
+        decoding="async"
         transition:name={`album-image-${album.id}`}
       />
-      <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
-        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+      
+      <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 
+                  group-hover:opacity-100 transition-opacity duration-300 rounded-md 
+                  [transform:translateZ(0)] pointer-events-none">
+        <svg class="w-5 h-5 text-white antialiased" fill="currentColor" viewBox="0 0 24 24">
           <path d="M8 5.14v13.72l11-6.86L8 5.14Z"/>
         </svg>
       </div>
     </div>
 
-    <div class="flex flex-col min-w-0 overflow-hidden">
-      <span class="text-sm font-semibold text-zinc-100 truncate group-hover:text-white">
+    <div class="flex flex-col min-w-0 overflow-hidden [transform:translateZ(0)]">
+      <span class="text-sm font-semibold text-zinc-100 truncate group-hover:text-white antialiased transition-colors">
         {album.name}
       </span>
-      <span class="text-xs text-zinc-400 font-medium truncate group-hover:text-zinc-300">
+      <span class="text-xs text-zinc-400 font-medium truncate group-hover:text-zinc-300 antialiased transition-colors">
         Álbum • {album.artists?.[0]?.name}
       </span>
     </div>

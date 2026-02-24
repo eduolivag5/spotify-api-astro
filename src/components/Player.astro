@@ -4,50 +4,58 @@
 
 <div 
   id="player-container" 
-  class="fixed bottom-0 left-0 right-0 z-[100] pointer-events-none overflow-hidden h-40 flex items-end pb-4 md:pb-8"
+  class="fixed bottom-0 left-0 right-0 z-[100] pointer-events-none overflow-hidden h-40 flex items-end pb-4 md:pb-8 isolate"
 >
   <div 
     id="global-player" 
-    class="invisible w-[95%] max-w-7xl mx-auto translate-y-[150%] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform"
+    class="invisible w-[95%] max-w-7xl mx-auto translate-y-[150%] transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform [transform:translateZ(0)]"
   >
-    <div class="relative w-full h-16 md:h-24 bg-zinc-900/90 backdrop-blur-3xl rounded-2xl md:rounded-[2.5rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex items-center justify-between px-4 md:px-10 overflow-hidden pointer-events-auto">
+    <div class="relative w-full h-16 md:h-24 bg-zinc-900/90 backdrop-blur-3xl rounded-2xl md:rounded-[2.5rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex items-center justify-between px-4 md:px-10 overflow-hidden pointer-events-auto [transform:translateZ(0)] [backface-visibility:hidden]">
       
-      <div class="absolute -left-10 top-0 w-32 h-32 bg-[#1DB954]/20 rounded-full blur-[50px] pointer-events-none"></div>
+      <div class="absolute -left-10 top-0 w-32 h-32 bg-[#1DB954]/20 rounded-full blur-[50px] pointer-events-none will-change-opacity"></div>
 
-      <div class="flex items-center gap-3 md:gap-5 min-w-0 flex-1 md:flex-none md:w-[30%]">
+      <div class="flex items-center gap-3 md:gap-5 min-w-0 flex-1 md:flex-none md:w-[30%] [transform:translateZ(0)]">
         <div class="relative h-10 w-10 md:h-16 md:w-16 flex-shrink-0">
-           <img id="player-img" src="" alt="" class="h-full w-full rounded-lg md:rounded-2xl object-cover bg-zinc-800" />
-           <div class="absolute inset-0 rounded-lg md:rounded-2xl ring-1 ring-inset ring-white/10"></div>
+           <img 
+            id="player-img" 
+            src="" 
+            alt="" 
+            class="h-full w-full rounded-lg md:rounded-2xl object-cover bg-zinc-800 [backface-visibility:hidden]" 
+            decoding="async"
+           />
+           <div class="absolute inset-0 rounded-lg md:rounded-2xl ring-1 ring-inset ring-white/10 pointer-events-none"></div>
         </div>
         <div class="flex flex-col min-w-0">
-          <span id="player-name" class="truncate text-[11px] md:text-base font-black text-white tracking-tight"></span>
-          <span id="player-artist" class="truncate text-[9px] md:text-[11px] text-[#1DB954] font-bold uppercase tracking-widest mt-0.5"></span>
+          <span id="player-name" class="truncate text-[11px] md:text-base font-black text-white tracking-tight antialiased"></span>
+          <span id="player-artist" class="truncate text-[9px] md:text-[11px] text-[#1DB954] font-bold uppercase tracking-widest mt-0.5 antialiased"></span>
         </div>
       </div>
 
-      <div class="hidden md:flex flex-col items-center flex-1 gap-2 max-w-[40%]">
+      <div class="hidden md:flex flex-col items-center flex-1 gap-2 max-w-[40%] [transform:translateZ(0)]">
         <div class="flex items-center gap-8 text-white/40">
-            <button class="hover:text-white transition-colors cursor-pointer"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-            <button class="h-11 w-11 flex items-center justify-center bg-white text-black rounded-full hover:scale-105 transition-transform shadow-xl cursor-pointer"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
-            <button class="hover:text-white transition-colors cursor-pointer"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6zm9-12v12h2V6z"/></svg></button>
+            <button class="hover:text-white transition-colors duration-200 cursor-pointer outline-none"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+            <button class="h-11 w-11 flex items-center justify-center bg-white text-black rounded-full hover:scale-105 active:scale-95 transition-transform duration-200 shadow-xl cursor-pointer outline-none"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+            <button class="hover:text-white transition-colors duration-200 cursor-pointer outline-none"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6zm9-12v12h2V6z"/></svg></button>
         </div>
         <div class="flex items-center gap-3 w-full px-4">
-            <span class="text-[9px] font-mono text-zinc-500">1:24</span>
-            <div class="h-1 flex-1 bg-white/10 rounded-full overflow-hidden group/progress cursor-pointer">
-                <div class="h-full bg-[#1DB954] w-[45%] rounded-full group-hover/progress:bg-[#1ed760] shadow-[0_0_10px_#1DB954]"></div>
+            <span class="text-[9px] font-mono text-zinc-500 antialiased">1:24</span>
+            <div class="h-1 flex-1 bg-white/10 rounded-full overflow-hidden group/progress cursor-pointer [transform:translateZ(0)]">
+                <div class="h-full bg-[#1DB954] w-[45%] rounded-full group-hover/progress:bg-[#1ed760] transition-colors duration-300 [box-shadow:0_0_10px_#1DB954]"></div>
             </div>
-            <span class="text-[9px] font-mono text-zinc-500">3:42</span>
+            <span class="text-[9px] font-mono text-zinc-500 antialiased">3:42</span>
         </div>
       </div>
 
-      <div class="flex items-center justify-end gap-2 md:gap-6 md:w-[30%]">
-          <button class="md:hidden flex h-10 w-10 items-center justify-center text-[#1DB954] active:scale-90 transition-transform cursor-pointer">
-              <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+      <div class="flex items-center justify-end gap-2 md:gap-6 md:w-[30%] [transform:translateZ(0)]">
+          <button class="md:hidden flex h-10 w-10 items-center justify-center text-[#1DB954] active:scale-90 transition-transform duration-200 cursor-pointer outline-none">
+              <svg class="w-8 h-8 antialiased" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
           </button>
           
           <div class="hidden md:flex items-center gap-3 w-28 group">
-              <svg class="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.26 2.5-4.02z"/></svg>
-              <div class="h-1 flex-1 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-zinc-500 w-2/3 group-hover:bg-[#1DB954] transition-colors"></div></div>
+              <svg class="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors duration-200" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.26 2.5-4.02z"/></svg>
+              <div class="h-1 flex-1 bg-white/10 rounded-full overflow-hidden [transform:translateZ(0)]">
+                <div class="h-full bg-zinc-500 w-2/3 group-hover:bg-[#1DB954] transition-colors duration-300"></div>
+              </div>
           </div>
       </div>
     </div>
@@ -75,9 +83,7 @@
       player.classList.remove('invisible');
       
       requestAnimationFrame(() => {
-        // Usamos translate-y-0 para que descanse sobre el padding-bottom del padre
-        player.classList.remove('translate-y-[150%]');
-        player.classList.add('translate-y-0');
+        player.classList.replace('translate-y-[150%]', 'translate-y-0');
       });
     }
   };

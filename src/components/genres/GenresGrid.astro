@@ -7,21 +7,27 @@ const GENRES = [
 ---
 
 <div class="w-full">
-  <div class="flex flex-wrap gap-3 py-2">
+  <div class="flex flex-wrap gap-3 py-6 px-4 isolate overflow-visible">
     {GENRES.map((genre) => (
       <div 
-        class="relative px-6 py-3 rounded-2xl
-               bg-white/[0.03] backdrop-blur-md
-               border border-white/10
+        class="group relative px-6 py-3 rounded-2xl cursor-default
+               bg-white/[0.03] backdrop-blur-md border border-white/10
                shadow-[0_4px_20px_rgba(0,0,0,0.2)]
-               hover:bg-white/[0.08] hover:border-[#1DB954]/40 hover:scale-[1.05]
-               transition-all duration-300 ease-out
-               cursor-default group overflow-hidden"
+               [transform:translateZ(0)] [backface-visibility:hidden]
+               will-change-transform 
+               hover:scale-[1.08] hover:border-[#1DB954]/40 hover:bg-white/[0.06]
+               transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]
+               motion-reduce:transform-none motion-reduce:transition-none"
       >
-        {/* Brillo interno al hacer hover */}
-        <div class="absolute inset-0 bg-gradient-to-tr from-[#1DB954]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="absolute inset-0 rounded-2xl pointer-events-none opacity-0 
+                    bg-gradient-to-tr from-[#1DB954]/10 to-transparent 
+                    group-hover:opacity-100 transition-opacity duration-300 
+                    will-change-opacity overflow-hidden">
+        </div>
         
-        <span class="relative text-[11px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover:text-white transition-colors">
+        <span class="relative text-[11px] font-black uppercase tracking-[0.2em] 
+                     text-zinc-400 group-hover:text-white transition-colors duration-300
+                     antialiased inline-block">
           {genre}
         </span>
       </div>

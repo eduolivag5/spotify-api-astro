@@ -12,12 +12,30 @@
   100% { height: 16px; }
 }
 
-/* --- FIX DE SEGURIDAD (Evita iconos gigantes) --- */
+/* --- OPTIMIZACIÓN DE MOTOR DE RENDERIZADO --- */
+:root {
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html, body {
+  @apply bg-black text-zinc-100;
+  overflow: hidden;
+  height: 100dvh;
+  /* Evita el scroll elástico en el body que rompe el layout fijo */
+  overscroll-behavior: none; 
+}
+
+/* --- FIX DE SEGURIDAD PARA SVG --- */
 svg {
   display: inline-block;
   vertical-align: middle;
-  width: 1.25rem; /* Equivalente a w-5 */
-  height: 1.25rem; /* Equivalente a h-5 */
+  width: 1.25rem;
+  height: 1.25rem;
+  /* La GPU maneja mejor los SVG si se fuerza el modo composición */
+  transform: translateZ(0); 
 }
 
 /* --- ESTRUCTURA DEL LAYOUT --- */
@@ -29,6 +47,8 @@ svg {
   grid-template-columns: 300px 1fr;
   grid-template-rows: auto 1fr;
   height: 100dvh;
+  /* Aislamiento de capas para el grid principal */
+  isolation: isolate;
 }
 
 @media (max-width: 768px) {
@@ -45,13 +65,26 @@ svg {
     top: 0;
     width: 100%;
     z-index: 50;
-    background: black; /* Evita que el contenido se vea mal tras la navbar si el blur falla */
+    background: black;
+    transform: translateZ(0);
   }
 
   main {
     margin: 0 !important;
     border-radius: 0 !important;
   }
+}
+
+/* --- CLASES DE ALTO RENDIMIENTO (GPU) --- */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.gpu-text {
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
 }
 
 /* --- SCROLLBAR ESTILO SPOTIFY --- */
@@ -62,3 +95,16 @@ svg {
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* Soporte para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* --- OPTIMIZACIÓN DE TRANSICIONES DE VISTA --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}

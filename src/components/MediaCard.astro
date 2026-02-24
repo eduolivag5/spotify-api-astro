@@ -1,0 +1,75 @@
+---
+// src/components/shared/MediaCard.astro
+interface Props {
+  id?: string;
+  href: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  type: 'artist' | 'album' | 'playlist' | 'track';
+  transitionName?: string;
+}
+
+const { href, title, subtitle, image, id, type, transitionName } = Astro.props;
+
+// Colores temáticos opcionales por tipo (ejemplo: artistas verdes, álbumes azules)
+// Por ahora mantenemos el verde Spotify para consistencia total
+const themeColor = "#1DB954";
+---
+
+<a 
+  href={href}
+  class="group relative flex flex-col p-2.5 rounded-[2rem] w-full max-w-[140px] overflow-hidden isolate
+         bg-white/[0.03] backdrop-blur-md border border-white/10
+         [transform:translateZ(0)] [backface-visibility:hidden]
+         shadow-[0_8px_32px_rgba(0,0,0,0.3)]
+         hover:bg-white/[0.08]
+         transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+>
+  <div class="absolute inset-0 pointer-events-none opacity-0 
+              bg-gradient-to-br from-white/[0.12] to-transparent 
+              group-hover:opacity-100 transition-opacity duration-500 
+              will-change-opacity"></div>
+
+  <div class="relative aspect-square overflow-hidden rounded-full bg-zinc-800 mb-3 ring-1 ring-white/5 
+              [box-shadow:inset_0_0_12px_rgba(0,0,0,0.4)]">
+    
+    <img 
+      src={image} 
+      class="h-full w-full object-cover [backface-visibility:hidden]
+             group-hover:scale-110 transition-transform duration-700 ease-out 
+             will-change-transform" 
+      alt={title}
+      loading="lazy"
+      decoding="async"
+      transition:name={transitionName}
+    />
+    
+    <div class="absolute inset-0 flex items-center justify-center bg-[#1DB954]/20 
+                opacity-0 group-hover:opacity-100 transition-opacity duration-500 will-change-opacity">
+        <div class="bg-[#1DB954] p-2 rounded-full [filter:drop-shadow(0_0_8px_rgba(29,185,84,0.5))]
+                    translate-y-2 group-hover:translate-y-0 
+                    transition-transform duration-500 will-change-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="black">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </div>
+    </div>
+  </div>
+
+  <div class="relative flex flex-col items-center px-1">
+    <h3 
+      class="text-[10px] font-black tracking-widest truncate text-white/80 
+             group-hover:text-[#1DB954] transition-colors duration-300 uppercase text-center w-full antialiased" 
+      title={title}
+    >
+      {title}
+    </h3>
+    
+    <div class="flex items-center gap-1.5 mt-1 opacity-50 group-hover:opacity-100 transition-opacity duration-300 will-change-opacity">
+        <span class="text-[8px] px-2 py-[1px] rounded-full bg-white/5 border border-white/10 text-white/70 font-bold uppercase tracking-tighter">
+            {subtitle}
+        </span>
+    </div>
+  </div>
+</a>

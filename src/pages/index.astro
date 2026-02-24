@@ -12,22 +12,42 @@ const HIGHLIGHTED_ALBUM_ID = import.meta.env.SPOTIFY_HIGHLIGHTED_ALBUM_ID;
 
 <Layout title="Spotify | Dashboard">
 
-  <div class="flex flex-col gap-8 pb-32">
+  <div class="flex flex-col gap-16 pb-32 isolate">
     
     <SectionContainer 
       title="Artistas en bucle"
       linkText="Mostrar todos"
       href="/top-artists"
     >
-      <TopArtists />
+      <div class="min-h-[180px] [transform:translateZ(0)]">
+        <TopArtists />
+      </div>
     </SectionContainer>
+
+    <div class="[transform:translateZ(0)] will-change-transform px-2">
+      <SectionContainer
+        title="Álbum destacado"
+        linkText="Ver álbum"
+        href={`/album/${HIGHLIGHTED_ALBUM_ID}`}
+      >
+        <HighlightedAlbum albumId={HIGHLIGHTED_ALBUM_ID} />
+      </SectionContainer>
+    </div> 
 
     <SectionContainer 
       title="Recientemente escuchado"
       linkText="Mostrar todos"
       href="/history"
     >
-      <HistoryTrackList />
+      <div class="min-h-[200px] [transform:translateZ(0)]">
+        <HistoryTrackList />
+      </div>
+    </SectionContainer>
+
+    <SectionContainer title="Explorar Géneros">
+      <div class="[transform:translateZ(0)]">
+        <GenresGrid />
+      </div>
     </SectionContainer>
 
     <SectionContainer 
@@ -35,21 +55,18 @@ const HIGHLIGHTED_ALBUM_ID = import.meta.env.SPOTIFY_HIGHLIGHTED_ALBUM_ID;
       linkText="Mostrar todos"
       href="/featured"
     >
-      <FeaturedPlaylists />
+      <div class="min-h-[220px] [transform:translateZ(0)]">
+        <FeaturedPlaylists />
+      </div>
     </SectionContainer>
 
-    <SectionContainer
-      title="Álbum destacado"
-      linkText="Ver álbum"
-      href={`/album/${HIGHLIGHTED_ALBUM_ID}`}
-    >
-      <HighlightedAlbum albumId={HIGHLIGHTED_ALBUM_ID} />
-    </SectionContainer>
-
-    <SectionContainer 
-      title="Tus Géneros"
-    >
-      <GenresGrid />
-    </SectionContainer>
   </div>
 </Layout>
+
+<style>
+  /* Optimización pro de renderizado */
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 400px;
+  }
+</style>

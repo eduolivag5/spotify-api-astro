@@ -54,36 +54,26 @@ export interface RecentlyPlayed {
   }[];
 }
 
+// src/types/spotify.ts
+
+// 1. Definición atómica del objeto
 export interface SpotifyPlaylist {
   id: string;
   name: string;
-  description: string;
-  collaborative: boolean;
+  images: { url: string; height?: number; width?: number }[];
   external_urls: { spotify: string };
-  images: { url: string; height?: number; width?: number; }[];
-  owner: {
-    display_name: string;
-    id: string;
-    external_urls: { spotify: string };
-  };
-  public: boolean;
-  tracks: {
-    href: string;
-    total: number;
-  };
+  owner: { display_name: string };
+  tracks: { total: number };
   type: string;
-  uri: string;
 }
 
-export interface FeaturedPlaylistsResponse {
-  message?: string;
-  playlists: {
-    href: string;
-    items: SpotifyPlaylist[];
-    limit: number;
-    next: string | null;
-    offset: number;
-    previous: string | null;
-    total: number;
-  };
+// 2. Interfaz Genérica de Paginación (La "navaja suiza")
+export interface SpotifyPaging<T> {
+  href: string;
+  items: T[]; // T será SpotifyPlaylist, SpotifyTrack, etc.
+  limit: number;
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  total: number;
 }

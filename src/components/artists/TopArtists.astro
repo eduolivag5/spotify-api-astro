@@ -2,12 +2,19 @@
 import { getTopArtists } from "../../lib/spotify";
 import ArtistItem from "./ArtistItem.astro";
 
-// Obtenemos una cantidad generosa para llenar pantallas anchas
-const artists = (await getTopArtists()).slice(0, 12);
+const topArtists = await getTopArtists();
+// Traemos suficientes para llenar cualquier pantalla, pero el CSS recortará los sobrantes
+const artists = topArtists.slice(0, 12);
 ---
-<div class="w-full flex flex-nowrap items-center justify-between gap-4 overflow-hidden py-2">
+
+<div class="w-full overflow-hidden py-4 px-2">
+  <div 
+    class="flex flex-nowrap items-center gap-6 
+           overflow-hidden select-none
+           isolate [transform:translateZ(0)]"
+  >
     {artists.map((artist) => (
-      <div class="flex-shrink-0">
+      <div class="flex-shrink-0 w-[140px] [transform:translateZ(0)] will-change-transform antialiased">
         <ArtistItem 
           id={artist.id}
           name={artist.name}
@@ -16,3 +23,4 @@ const artists = (await getTopArtists()).slice(0, 12);
       </div>
     ))}
   </div>
+</div>

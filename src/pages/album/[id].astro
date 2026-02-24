@@ -1,5 +1,4 @@
 ---
-// src/pages/albums/[id].astro
 import GlassHeader from '../../components/GlassHeader.astro';
 import TrackList from '../../components/tracks/TrackList.astro';
 import Layout from '../../layouts/Layout.astro';
@@ -15,28 +14,37 @@ const releaseYear = album.release_date.split('-')[0];
 
 <Layout title={`${album.name} - ${album.artists[0].name}`}>
   
-  <GlassHeader 
-    id={album.id}
-    title={album.name}
-    image={album.images[0]?.url}
-    type={album.album_type === 'single' ? 'Sencillo' : 'Álbum'}
-    transitionName="album"
-  >
-    <div slot="details" class="flex items-center gap-3 text-sm font-medium text-white/60">
-      <a href={`/artists/${album.artists[0].id}`} class="text-white hover:text-[#1DB954] transition-colors font-bold">
-        {album.artists[0].name}
-      </a>
-      <span class="text-white/10">•</span>
-      <span>{releaseYear}</span>
-      <span class="text-white/10">•</span>
-      <span class="font-mono text-xs">{album.total_tracks} pistas</span>
-    </div>
-  </GlassHeader>
+  <div class="relative w-full [transform:translateZ(0)] isolate">
+    <div class="absolute -top-24 -left-20 w-96 h-96 bg-[#1DB954]/10 rounded-full blur-[120px] pointer-events-none will-change-[opacity,transform]"></div>
+    
+    <GlassHeader 
+      id={album.id}
+      title={album.name}
+      image={album.images[0]?.url}
+      type={album.album_type === 'single' ? 'Sencillo' : 'Álbum'}
+      transitionName="album"
+    >
+      <div slot="details" class="flex items-center gap-3 text-sm font-medium text-white/60 [transform:translateZ(0)]">
+        <a 
+          href={`/artists/${album.artists[0].id}`} 
+          class="text-white hover:text-[#1DB954] transition-colors duration-300 font-bold antialiased"
+        >
+          {album.artists[0].name}
+        </a>
+        <span class="text-white/10" aria-hidden="true">•</span>
+        <span class="antialiased">{releaseYear}</span>
+        <span class="text-white/10" aria-hidden="true">•</span>
+        <span class="font-mono text-xs antialiased">{album.total_tracks} pistas</span>
+      </div>
+    </GlassHeader>
 
-  <TrackList 
-    tracks={tracks} 
-    artistName={album.artists[0].name} 
-    albumImage={album.images[0]?.url} 
-  />
+    <div class="relative mt-8 [transform:translateZ(0)]">
+      <TrackList 
+        tracks={tracks} 
+        artistName={album.artists[0].name} 
+        albumImage={album.images[0]?.url} 
+      />
+    </div>
+  </div>
 
 </Layout>

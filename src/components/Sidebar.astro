@@ -2,60 +2,48 @@
 import AlbumList from './albums/AlbumList.astro';
 ---
 
-<nav class="flex flex-col h-full gap-2 font-bold text-zinc-400 p-2">
-  <div class="rounded-xl bg-zinc-900/50 p-2 flex flex-col shadow-sm">
+<nav class="flex flex-col h-full gap-2 font-bold text-zinc-400 p-2 isolate [transform:translateZ(0)]">
+  <div class="rounded-xl bg-zinc-900/50 p-2 flex flex-col shadow-sm [transform:translateZ(0)]">
     <a 
       href="/" 
-      class="flex items-center gap-5 px-4 py-3 text-white transition-all duration-300 group rounded-lg hover:bg-white/5 active:scale-95"
+      class="flex items-center gap-5 px-4 py-3 text-white transition-all duration-300 group rounded-lg hover:bg-white/5 active:scale-95 [transform:translateZ(0)] will-change-transform"
     >
-      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <svg class="w-6 h-6 antialiased" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12.5 3.553a1 1 0 0 0-1 0L4.447 8.111A1 1 0 0 0 4 8.955V19a2 2 0 0 0 2 2h4a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h4a2 2 0 0 0 2-2V8.955a1 1 0 0 0-.447-.844L12.5 3.553Z"/>
       </svg>
-      <span class="text-sm tracking-tight">Inicio</span>
+      <span class="text-sm tracking-tight antialiased">Inicio</span>
     </a>
   </div>
 
-  <div class="rounded-xl bg-zinc-900/50 flex-1 flex flex-col min-h-0 overflow-hidden border border-white/5">
+  <div class="rounded-xl bg-zinc-900/50 flex-1 flex flex-col min-h-0 overflow-hidden border border-white/5 [transform:translateZ(0)]">
     
-    <header class="pt-4 px-4 pb-2 flex flex-col gap-3 flex-shrink-0">
+    <header class="pt-4 px-4 pb-2 flex flex-col gap-3 flex-shrink-0 [transform:translateZ(0)]">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3 px-1">
-          <svg class="w-6 h-6 text-zinc-400" fill="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-zinc-400 antialiased" fill="currentColor" viewBox="0 0 24 24">
             <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1ZM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866L15.5 2.134ZM16 4.732 20 7.041v9.918l-4-2.309V4.732ZM9 2.134a1 1 0 0 0-1.5.866v18a1 1 0 0 0 1.5.866l6-3.464a1 1 0 0 0 .5-.866V6.464a1 1 0 0 0-.5-.866L9 2.134Z"/>
           </svg>
-          <span class="text-sm font-bold tracking-tight">Tu biblioteca</span>
+          <span class="text-sm font-bold tracking-tight antialiased">Tu biblioteca</span>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <div class="flex gap-2">
-            <span class="px-3 py-1 bg-white/10 text-white rounded-full text-[11px] font-bold cursor-default">
+            <span class="px-3 py-1 bg-white/10 text-white rounded-full text-[11px] font-bold cursor-default antialiased [transform:translateZ(0)]">
               Álbumes
             </span>
         </div>
-        <button class="flex items-center gap-1 text-[11px] font-bold text-zinc-400 hover:text-white transition-colors">
+        <button class="flex items-center gap-1 text-[11px] font-bold text-zinc-400 hover:text-white transition-colors duration-200 outline-none antialiased">
           <span>Recientes</span>
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5H7z"/></svg>
         </button>
       </div>
     </header>
 
-    <div class="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
-      <AlbumList />
+    <div class="flex-1 overflow-y-auto overflow-x-hidden [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.1)_transparent] 
+                [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full 
+                hover:[&::-webkit-scrollbar-thumb]:bg-white/20 transition-colors [transform:translateZ(0)]">
+      <!--<AlbumList /> -->
     </div>
   </div>
 </nav>
-
-<style>
-  /* Scrollbar más fino para que no estorbe visualmente */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-  }
-  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-  }
-</style>

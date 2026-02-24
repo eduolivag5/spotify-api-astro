@@ -14,21 +14,29 @@ if (!artist) return Astro.redirect('/404');
 ---
 
 <Layout title={`${artist.name}`}>
-  <GlassHeader 
-    id={artist.id}
-    title={artist.name}
-    image={artist.images[0]?.url}
-    type="Artista Verificado"
-    transitionName="artist"
-  />
+  <div class="relative w-full [transform:translateZ(0)] isolate">
+    <div class="absolute -top-32 -right-32 w-[500px] h-[500px] bg-[#1DB954]/5 rounded-full blur-[150px] pointer-events-none will-change-transform"></div>
+    
+    <GlassHeader 
+      id={artist.id}
+      title={artist.name}
+      image={artist.images[0]?.url}
+      type="Artista Verificado"
+      transitionName="artist"
+    />
 
-  <div class="flex flex-col gap-16 mt-12 px-4 md:px-8">
-    {albums.length > 0 && (
-      <AlbumCarousel title="Álbumes" items={albums} />
-    )}
+    <div class="flex flex-col gap-16 mt-12 px-4 md:px-8 [transform:translateZ(0)]">
+      {albums.length > 0 && (
+        <div class="[transform:translateZ(0)] will-change-transform">
+          <AlbumCarousel title="Álbumes" items={albums} />
+        </div>
+      )}
 
-    {singles.length > 0 && (
-      <AlbumCarousel title="Singles" items={singles} />
-    )}
+      {singles.length > 0 && (
+        <div class="[transform:translateZ(0)] will-change-transform">
+          <AlbumCarousel title="Singles" items={singles} />
+        </div>
+      )}
+    </div>
   </div>
 </Layout>

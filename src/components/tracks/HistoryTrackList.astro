@@ -1,15 +1,32 @@
 ---
+// src/components/tracks/RecentlyPlayedStatic.astro
 import { getRecentlyPlayed } from "../../lib/spotify";
 import TrackItem from "./TrackItem.astro";
+import type { RecentlyPlayed } from "../../types/spotify";
 
-// Traemos los primeros 10 tracks del historial
-const trackItems = await getRecentlyPlayed(10);
+const response = await getRecentlyPlayed(12);
+// Manejo de tipos para asegurar que siempre trabajamos con el array de items
+const trackItems = (response as any).items || response; 
 ---
 
-<div class="w-full">
-  <div class="flex flex-nowrap items-center justify-between gap-4 overflow-hidden py-2">
-    {trackItems.map((item) => (
-      <TrackItem track={item.track} />
-    ))}
+<div class="w-full overflow-hidden">
+  <div 
+    class="flex flex-nowrap items-center gap-6 py-4 px-2 
+           overflow-hidden select-none
+           isolate [transform:translateZ(0)]"
+  >
+    {
+      trackItems && trackItems.length > 0 ? (
+        trackItems.map((item: any) => (
+          <div class="flex-shrink-0 w-[140px] [transform:translateZ(0)] will-change-transform antialiased">
+            <TrackItem track={item.track} />
+          </div>
+        ))
+      ) : (
+        <p class="w-full text-center text-zinc-500 text-[10px] uppercase tracking-widest py-10 antialiased">
+          No hay actividad reciente
+        </p>
+      )
+    }
   </div>
 </div>
