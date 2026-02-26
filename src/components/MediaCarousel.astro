@@ -1,0 +1,87 @@
+---
+interface Props {
+  title: string;
+  count?: number;
+  href?: string;
+  linkText?: string;
+}
+
+const { title, count, href, linkText = "Ver todo" } = Astro.props;
+const id = `carousel-${title.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<section class="flex flex-col gap-4 isolate [transform:translateZ(0)]">
+  <header class="flex items-end justify-between px-2 py-2">
+    <div class="flex items-center gap-3">
+      <div class="flex flex-col">
+        <h2 class="text-xl font-bold tracking-tighter text-white antialiased">
+          {title}<span class="text-green-400">.</span>
+        </h2>
+      </div>
+      {count !== undefined && (
+        <span class="hidden sm:block text-[8px] text-zinc-500 font-black uppercase tracking-[0.2em] bg-white/5 px-2 py-0.5 rounded-full border border-white/5 antialiased">
+          {count}
+        </span>
+      )}
+    </div>
+
+    <div class="flex items-center gap-4">
+      {href && (
+        <a 
+          href={href} 
+          class="hidden sm:block rounded-full bg-white/5 border border-white/10 px-4 py-1.5 
+                 text-[10px] font-bold uppercase tracking-widest text-zinc-500
+                 hover:bg-white/10 hover:text-white hover:border-white/20
+                 transition-all duration-300 ease-out antialiased
+                 active:scale-95"
+        >
+          {linkText}
+        </a>
+      )}
+
+      <div class="flex items-center gap-1.5">
+        <button data-direction="left" data-target={id} class="p-1.5 rounded-full bg-zinc-900/50 border border-white/5 text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all active:scale-90 cursor-pointer outline-none">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button data-direction="right" data-target={id} class="p-1.5 rounded-full bg-zinc-900/50 border border-white/5 text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all active:scale-90 cursor-pointer outline-none">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div 
+    id={id}
+    class="flex overflow-hidden gap-3 scroll-smooth snap-x px-2 pb-4 overscroll-behavior-x-contain"
+  >
+    <slot />
+  </div>
+</section>
+
+<script>
+  function initUniversalCarousel() {
+    const handleScroll = (e: MouseEvent) => {
+      const btn = (e.target as HTMLElement).closest('button[data-direction]');
+      if (!btn) return;
+
+      const direction = btn.getAttribute('data-direction');
+      const targetId = btn.getAttribute('data-target');
+      const container = document.getElementById(targetId!);
+      
+      if (container) {
+        // Multiplicador de scroll: ajustamos a un valor que se sienta fluido
+        const scrollAmount = container.offsetWidth * 0.8;
+        container.scrollBy({
+          left: direction === 'left' ? -scrollAmount : scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    document.removeEventListener('click', handleScroll);
+    document.addEventListener('click', handleScroll);
+  }
+
+  initUniversalCarousel();
+  document.addEventListener('astro:after-swap', initUniversalCarousel);
+</script>

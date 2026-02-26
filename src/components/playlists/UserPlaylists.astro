@@ -1,0 +1,28 @@
+---
+// src/components/playlists/UserPlaylists.astro
+import { getUserSavedPlaylists } from "../../lib/spotify";
+import MediaCarousel from "../MediaCarousel.astro";
+import PlaylistItem from "./PlaylistItem.astro";
+
+const playlists = await getUserSavedPlaylists(12);
+---
+
+{
+  playlists && playlists.length > 0 ? (
+    <MediaCarousel title="Tus Playlists" count={playlists.length}>
+      {playlists.map((playlist) => (
+        <div class="min-w-[140px] md:min-w-[160px] flex-shrink-0 snap-start">
+          <PlaylistItem playlist={playlist} />
+        </div>
+      ))}
+    </MediaCarousel>
+  ) : (
+    <div class="w-full px-2 py-4">
+      <div class="w-full py-10 text-center border border-white/5 rounded-2xl bg-white/[0.02]">
+        <p class="text-zinc-500 text-[10px] uppercase tracking-widest antialiased">
+          No tienes playlists guardadas
+        </p>
+      </div>
+    </div>
+  )
+}

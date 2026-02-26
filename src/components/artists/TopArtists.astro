@@ -1,26 +1,21 @@
 ---
+// src/components/artists/TopArtists.astro
 import { getTopArtists } from "../../lib/spotify";
+import MediaCarousel from "../MediaCarousel.astro";
 import ArtistItem from "./ArtistItem.astro";
 
 const topArtists = await getTopArtists();
-// Traemos suficientes para llenar cualquier pantalla, pero el CSS recortará los sobrantes
 const artists = topArtists.slice(0, 12);
 ---
 
-<div class="w-full overflow-hidden py-4 px-2">
-  <div 
-    class="flex flex-nowrap items-center gap-6 
-           overflow-hidden select-none
-           isolate [transform:translateZ(0)]"
-  >
-    {artists.map((artist) => (
-      <div class="flex-shrink-0 w-[140px] [transform:translateZ(0)] will-change-transform antialiased">
-        <ArtistItem 
-          id={artist.id}
-          name={artist.name}
-          image={artist.images[0]?.url}
-        />
-      </div>
-    ))}
-  </div>
-</div>
+<MediaCarousel title="Tus Artistas Top" count={artists.length} href="/top-artists">
+  {artists.map((artist) => (
+    <div class="min-w-[140px] md:min-w-[160px] flex-shrink-0 snap-start">
+      <ArtistItem 
+        id={artist.id}
+        name={artist.name}
+        image={artist.images[0]?.url}
+      />
+    </div>
+  ))}
+</MediaCarousel>

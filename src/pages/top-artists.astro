@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ArtistGrid from '../components/artists/ArtistGrid.astro';
+import { getTopArtists } from '../lib/spotify';
+
+// Obtenemos una cantidad mayor de artistas para que el Grid luzca lleno (ej. 50)
+const artists = await getTopArtists(50);
+---
+
+<Layout title="Tus Artistas Top | Spotify Dashboard">
+  <main class="flex flex-col gap-8 px-4 md:px-8 py-12 max-w-7xl mx-auto isolate">
+    
+    <header class="flex flex-col gap-2 [transform:translateZ(0)]">
+      <div class="flex items-center gap-4">
+        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-white italic drop-shadow-2xl">
+          Artistas<span class="text-[#1DB954]">.</span>
+        </h1>
+        <div class="h-1 flex-grow bg-gradient-to-r from-[#1DB954]/50 to-transparent rounded-full hidden md:block"></div>
+      </div>
+      <p class="text-zinc-500 text-sm md:text-base font-medium tracking-tight mt-2 italic antialiased">
+        Tus artistas más escuchados en los últimos meses.
+      </p>
+    </header>
+
+    <section class="relative min-h-screen">
+      {artists && artists.length > 0 ? (
+        <ArtistGrid artists={artists} />
+      ) : (
+        <div class="flex flex-col items-center justify-center py-20 border border-white/5 rounded-3xl bg-white/[0.02]">
+           <p class="text-zinc-500 text-xs uppercase tracking-[0.3em] font-black">No se encontraron artistas</p>
+        </div>
+      )}
+    </section>
+
+  </main>
+</Layout>
+
+<style>
+  /* Optimización para el scroll de una lista larga de artistas */
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
+  }
+</style>

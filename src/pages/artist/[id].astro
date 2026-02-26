@@ -1,9 +1,11 @@
 ---
+// src/pages/artist/[id].astro
 import Layout from '../../layouts/Layout.astro';
 import { getArtistData } from '../../lib/spotify';
-import SectionHeader from '../../components/SectionHeader.astro';
 import GlassHeader from '../../components/GlassHeader.astro';
-import AlbumCarousel from '../../components/albums/AlbumCarousel.astro';
+import AlbumItem from '../../components/albums/AlbumItem.astro'; // Importamos el item
+import MediaCarousel from '../../components/MediaCarousel.astro';
+import AlbumGrid from '../../components/albums/AlbumGrid.astro';
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect('/404');
@@ -26,17 +28,15 @@ if (!artist) return Astro.redirect('/404');
     />
 
     <div class="flex flex-col gap-16 mt-12 px-4 md:px-8 [transform:translateZ(0)]">
+      
       {albums.length > 0 && (
-        <div class="[transform:translateZ(0)] will-change-transform">
-          <AlbumCarousel title="Álbumes" items={albums} />
-        </div>
+        <AlbumGrid albums={albums} />
       )}
 
       {singles.length > 0 && (
-        <div class="[transform:translateZ(0)] will-change-transform">
-          <AlbumCarousel title="Singles" items={singles} />
-        </div>
+        <AlbumGrid albums={singles} />
       )}
+      
     </div>
   </div>
 </Layout>

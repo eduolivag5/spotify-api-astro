@@ -1,0 +1,23 @@
+---
+// src/components/albums/AlbumGrid.astro
+import type { SpotifyAlbum } from '../../types/spotify';
+import AlbumItem from './AlbumItem.astro';
+
+interface Props {
+  albums: SpotifyAlbum[];
+}
+
+const { albums } = Astro.props;
+---
+
+<div class="w-full px-2 py-6">
+  <div 
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-10"
+  >
+    {albums.map((album) => (
+      <div class="group transition-transform duration-300 hover:scale-[1.03] will-change-transform">
+        <AlbumItem album={album} />
+      </div>
+    ))}
+  </div>
+</div>

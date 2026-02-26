@@ -1,32 +1,16 @@
 ---
-// src/components/tracks/RecentlyPlayedStatic.astro
-import { getRecentlyPlayed } from "../../lib/spotify";
 import TrackItem from "./TrackItem.astro";
-import type { RecentlyPlayed } from "../../types/spotify";
+import { getRecentlyPlayed } from "../../lib/spotify";
+import MediaCarousel from "../MediaCarousel.astro";
 
-const response = await getRecentlyPlayed(12);
-// Manejo de tipos para asegurar que siempre trabajamos con el array de items
-const trackItems = (response as any).items || response; 
+const items = await getRecentlyPlayed(12);
+const tracks = items?.map((i: any) => i.track) ?? [];
 ---
 
-<div class="w-full overflow-hidden">
-  <div 
-    class="flex flex-nowrap items-center gap-6 py-4 px-2 
-           overflow-hidden select-none
-           isolate [transform:translateZ(0)]"
-  >
-    {
-      trackItems && trackItems.length > 0 ? (
-        trackItems.map((item: any) => (
-          <div class="flex-shrink-0 w-[140px] [transform:translateZ(0)] will-change-transform antialiased">
-            <TrackItem track={item.track} />
-          </div>
-        ))
-      ) : (
-        <p class="w-full text-center text-zinc-500 text-[10px] uppercase tracking-widest py-10 antialiased">
-          No hay actividad reciente
-        </p>
-      )
-    }
-  </div>
-</div>
+<MediaCarousel title="Escuchado recientemente" count={tracks.length} href="/history">
+  {tracks.map(track => (
+    <div class="min-w-[140px] md:min-w-[160px] flex-shrink-0 snap-start">
+      <TrackItem track={track} />
+    </div>
+  ))}
+</MediaCarousel>

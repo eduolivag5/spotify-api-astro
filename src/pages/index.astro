@@ -1,72 +1,53 @@
 ---
-import TopArtists from '../components/artists/TopArtists.astro';
 import Layout from '../layouts/Layout.astro';
 import SectionContainer from '../components/SectionContainer.astro';
-import FeaturedPlaylists from '../components/playlists/FeaturedPlaylists.astro';
+
+// Componentes que consumen tus Carousels/Grids internamente
+import HighlightedAlbum from '../components/albums/HighlightedAlbum.astro';
 import HistoryTrackList from '../components/tracks/HistoryTrackList.astro';
 import GenresGrid from '../components/genres/GenresGrid.astro';
-import HighlightedAlbum from '../components/albums/HighlightedAlbum.astro';
+import UserPlaylists from '../components/playlists/UserPlaylists.astro';
+import TopArtists from '../components/artists/TopArtists.astro';
 
 const HIGHLIGHTED_ALBUM_ID = import.meta.env.SPOTIFY_HIGHLIGHTED_ALBUM_ID;
 ---
 
 <Layout title="Spotify | Dashboard">
-
-  <div class="flex flex-col gap-16 pb-32 isolate">
+  <div class="flex flex-col gap-12 md:gap-16 pb-32 isolate">
     
-    <SectionContainer 
-      title="Artistas en bucle"
-      linkText="Mostrar todos"
-      href="/top-artists"
-    >
-      <div class="min-h-[180px] [transform:translateZ(0)]">
-        <TopArtists />
-      </div>
-    </SectionContainer>
-
-    <div class="[transform:translateZ(0)] will-change-transform px-2">
-      <SectionContainer
-        title="Álbum destacado"
-        linkText="Ver álbum"
-        href={`/album/${HIGHLIGHTED_ALBUM_ID}`}
-      >
-        <HighlightedAlbum albumId={HIGHLIGHTED_ALBUM_ID} />
-      </SectionContainer>
-    </div> 
+    <TopArtists />
 
     <SectionContainer 
-      title="Recientemente escuchado"
-      linkText="Mostrar todos"
-      href="/history"
+      title="Álbum destacado" 
+      href={`/album/${HIGHLIGHTED_ALBUM_ID}`} 
+      linkText="Ver álbum"
     >
-      <div class="min-h-[200px] [transform:translateZ(0)]">
-        <HistoryTrackList />
-      </div>
+      <HighlightedAlbum albumId={HIGHLIGHTED_ALBUM_ID} />
     </SectionContainer>
 
-    <SectionContainer title="Explorar Géneros">
-      <div class="[transform:translateZ(0)]">
-        <GenresGrid />
-      </div>
-    </SectionContainer>
+    <HistoryTrackList />
+
+    <GenresGrid /> 
 
     <SectionContainer 
-      title="Playlists recomendadas"
-      linkText="Mostrar todos"
-      href="/featured"
+      title="Todos los géneros" 
+      href="/genres"
+      linkText="Ver todos"
     >
-      <div class="min-h-[220px] [transform:translateZ(0)]">
-        <FeaturedPlaylists />
-      </div>
+      <GenresGrid />
     </SectionContainer>
+    
+    <UserPlaylists />
 
   </div>
 </Layout>
 
 <style>
-  /* Optimización pro de renderizado */
+  /* Mantenemos content-visibility para que el navegador 
+     no renderice lo que está fuera de pantalla (muy útil en móviles)
+  */
   section {
     content-visibility: auto;
-    contain-intrinsic-size: 1px 400px;
+    contain-intrinsic-size: 1px 300px;
   }
 </style>
